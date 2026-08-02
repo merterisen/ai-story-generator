@@ -149,7 +149,16 @@ with col_left:
 # RIGHT PANEL — Story output
 # ═══════════════════════════════════════════════════════════════════════════
 with col_right:
-    st.subheader("Generated Story")
+    hdr_col1, hdr_col2 = st.columns([6, 4])
+    with hdr_col1:
+        st.subheader("Generated Story")
+    with hdr_col2:
+        view_mode = st.radio(
+            "View Mode",
+            options=["HTML", "Markdown"],
+            horizontal=True,
+            label_visibility="collapsed",
+        )
 
     # ── Generate with streaming ───────────────────────────────────────
     if generate_clicked and can_generate:
@@ -168,7 +177,11 @@ with col_right:
                 token = getattr(chunk, "content", "")
                 if token:
                     full_story += token
-                    story_placeholder.markdown(full_story)
+                    if view_mode == "Markdown":
+                        story_placeholder.code(full_story, language="markdown")
+                    else:
+                        with story_placeholder.container(border=True, height=450):
+                            st.markdown(full_story)
 
         st.session_state.story = full_story
 
@@ -184,7 +197,11 @@ with col_right:
 
     # ── Display previously generated story ────────────────────────────
     elif st.session_state.story:
-        st.markdown(st.session_state.story)
+        if view_mode == "Markdown":
+            st.code(st.session_state.story, language="markdown")
+        else:
+            with st.container(border=True, height=450):
+                st.markdown(st.session_state.story)
 
         words = len(st.session_state.story.split())
         chars = len(st.session_state.story)
@@ -195,20 +212,12 @@ with col_right:
         sc2.metric("Characters", f"{chars:,}")
         sc3.metric("Tokens (est.)", f"{tokens_est:,}")
     else:
-        st.info("✨ Configure your settings and click **Generate Story** to create an immersive language-learning story.")
+        st.info("Configure your settings and Generate Story.")
 
-    # ── Download / Copy ───────────────────────────────────────────────
+    # ── Download ───────────────────────────────────────────────────────
     if st.session_state.story:
         st.divider()
         btn_col1, btn_col2, _ = st.columns([1, 1, 2])
-        with btn_col1:
-            st.download_button(
-                "📄 Download Markdown",
-                data=st.session_state.story,
-                file_name="story.md",
-                mime="text/markdown",
-                use_container_width=True,
-            )
         with btn_col2:
             st.download_button(
                 "📋 Download Text",
@@ -217,3 +226,12 @@ with col_right:
                 mime="text/plain",
                 use_container_width=True,
             )
+        with btn_col1:
+            st.download_button(
+                "📄 Download Markdown",
+                data=st.session_state.story,
+                file_name="story.md",
+                mime="text/markdown",
+                use_container_width=True,
+            )
+        
