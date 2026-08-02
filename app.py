@@ -5,7 +5,7 @@ import os
 import streamlit as st
 from langchain.chat_models import init_chat_model
 
-from config import PROMPTS, TOPICS
+from config import PROMPTS
 
 # ---------------------------------------------------------------------------
 # Constants
