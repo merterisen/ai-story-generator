@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import osf
+import os
 
 import streamlit as st
 from langchain.chat_models import init_chat_model
