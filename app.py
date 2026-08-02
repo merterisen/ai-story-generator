@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os
+import osf
 
 import streamlit as st
 from langchain.chat_models import init_chat_model
@@ -18,7 +18,7 @@ DEFAULT_TARGET_WORDS = 1000
 # Page config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Story Creator",
+    page_title="Story Generator",
     layout="wide",
 )
 
@@ -49,7 +49,7 @@ if "selected_prompt" not in st.session_state:
 # ---------------------------------------------------------------------------
 # Layout — two columns
 # ---------------------------------------------------------------------------
-st.title("Story Creator")
+st.title("Story Generator")
 
 col_left, col_right = st.columns([4, 6], gap="large")
 
@@ -149,16 +149,12 @@ with col_left:
 # RIGHT PANEL — Story output
 # ═══════════════════════════════════════════════════════════════════════════
 with col_right:
-    hdr_col1, hdr_col2 = st.columns([6, 4])
-    with hdr_col1:
-        st.subheader("Generated Story")
-    with hdr_col2:
-        view_mode = st.radio(
-            "View Mode",
-            options=["HTML", "Markdown"],
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+    view_mode = st.radio(
+        "View Mode",
+        options=["HTML", "Markdown"],
+        horizontal=True,
+        label_visibility="collapsed",
+    )
 
     # ── Generate with streaming ───────────────────────────────────────
     if generate_clicked and can_generate:
