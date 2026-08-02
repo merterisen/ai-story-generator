@@ -18,7 +18,7 @@ DEFAULT_TARGET_WORDS = 1000
 # Page config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Story Generator",
+    page_title="Story Creator",
     layout="wide",
 )
 
@@ -49,7 +49,7 @@ if "selected_prompt" not in st.session_state:
 # ---------------------------------------------------------------------------
 # Layout — two columns
 # ---------------------------------------------------------------------------
-st.title("Story Generator")
+st.title("Story Creator")
 
 col_left, col_right = st.columns([4, 6], gap="large")
 
